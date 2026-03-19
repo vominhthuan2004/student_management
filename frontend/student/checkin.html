@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Student Checkin</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+
+<body>
+
+    <h2>Attendance Checkin</h2>
+
+    <input id="studentId" placeholder="Student ID">
+    <input id="classId" placeholder="Class ID">
+    <input id="code" placeholder="Attendance Code">
+
+    <button onclick="checkin()">Checkin</button>
+
+    <p id="result"></p>
+
+    <script>
+
+        async function checkin() {
+
+            const studentId = document.getElementById("studentId").value;
+            const classId = document.getElementById("classId").value;
+            const code = document.getElementById("code").value;
+
+            const res = await axios.post("http://localhost:3000/api/attendances/checkin", {
+                studentId,
+                classId,
+                code
+            });
+
+            document.getElementById("result").innerText = res.data.message;
+
+        }
+
+    </script>
+
+</body>
+
+</html>

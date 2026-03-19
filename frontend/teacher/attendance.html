@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Create Attendance</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
+</head>
+
+<body>
+
+    <h2>Create Attendance Session</h2>
+
+    <input type="text" id="classId" placeholder="Class ID">
+    <button onclick="createSession()">Create</button>
+
+    <h3>Code:</h3>
+    <p id="code"></p>
+
+    <div id="qrcode"></div>
+
+    <script>
+
+        async function createSession() {
+
+            const classId = document.getElementById("classId").value;
+
+            const res = await axios.post("http://localhost:3000/api/attendances/create-session", {
+                classId
+            });
+
+            const code = res.data.code;
+
+            document.getElementById("code").innerText = code;
+
+            QRCode.toCanvas(document.getElementById("qrcode"), code);
+
+        }
+
+    </script>
+
+</body>
+
+</html>
