@@ -91,6 +91,7 @@ exports.login = async (req, res) => {
         res.json({
             token,
             user: {
+                _id: user._id,
                 role: user.role,
                 studentId: user.studentId ? user.studentId.toString() : null
             }

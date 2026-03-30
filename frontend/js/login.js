@@ -16,7 +16,7 @@ async function login(event) {
         if (!res.data.token || !res.data.user || !res.data.user.role) {
             throw new Error("Invalid response structure");
         }
-
+        localStorage.setItem("userId", res.data.user._id);
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("role", res.data.user.role);
 

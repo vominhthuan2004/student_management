@@ -75,6 +75,36 @@ window.onload = () => {
     window.location.href = "../login.html";
     return;
   }
-
+  loadStudentInfo();
   loadHistory();
 };
+// logout
+function logout() {
+    localStorage.clear(); // xóa token, role, studentId...
+    window.location.href = '../login.html';
+}
+
+// Lấy thông tin sinh viên để hiển thị tên
+async function loadStudentInfo() {
+  const token = localStorage.getItem("token");
+  const studentId = localStorage.getItem("studentId");
+  if (!studentId) {
+    console.warn("Không tìm thấy studentId");
+    document.getElementById("studentInfo").textContent = "Sinh viên";
+    return;
+  }
+  try {
+    const res = await fetch(`http://localhost:3000/api/students/${studentId}`, {
+      headers: { "Authorization": "Bearer " + token }
+    });
+    if (!res.ok) throw new Error("Không thể lấy thông tin sinh viên");
+    const student = await res.json();
+    localStorage.setItem('classId', student.classId);
+    // Hiển thị mã số và tên
+    const displayText = `${student.studentCode} | ${student.fullName || student.studentCode}`;
+    document.getElementById("studentInfo").textContent = displayText;
+  } catch (err) {
+    console.error("Lỗi lấy thông tin sinh viên", err);
+    document.getElementById("studentInfo").textContent = "Sinh viên";
+  }
+}

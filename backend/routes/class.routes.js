@@ -5,13 +5,15 @@ const router = express.Router();
 const classController = require("../controllers/class.controller");
 
 const {verifyToken} = require("../middlewares/auth")
+const { validateClass } = require('../validations/class.validation');
+const validate = require('../validations/validate');
 //public routes
 router.get("/:id", classController.getClassById);// get class by id
 router.get("/", classController.getAllClasses); // get all classes
 
 //verify token for protected routes
-router.post("/",verifyToken, classController.createClass);// create class
-router.put("/:id", verifyToken, classController.updateClass);// update class
+router.post("/",verifyToken, validateClass,validate, classController.createClass);// create class
+router.put("/:id", verifyToken, validateClass,validate, classController.updateClass);// update class
 router.delete("/:id", verifyToken, classController.deleteClass);// delete class
 
 // get teacher's classes

@@ -17,6 +17,7 @@ async function login(event) {
         // Lưu token và thông tin user (đúng cấu trúc)
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("role", res.data.user.role);
+        localStorage.setItem("userId", res.data.user._id);
         if (res.data.user.studentId) {
             localStorage.setItem("studentId", res.data.user.studentId);
         }

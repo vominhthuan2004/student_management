@@ -19,3 +19,11 @@ exports.verifyToken = (req, res, next) => {
     res.status(401).json({ message: "Invalid token" });
   }
 };
+
+// Middleware kiểm tra quyền admin
+exports.isAdmin = (req, res, next) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ message: 'Chỉ admin mới có quyền' });
+  }
+  next();
+};
