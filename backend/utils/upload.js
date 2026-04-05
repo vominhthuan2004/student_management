@@ -27,10 +27,11 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  const allowed = ['image/jpeg', 'image/png', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-  if (allowed.includes(file.mimetype)) cb(null, true);
-  else cb(new Error('Invalid file type'), false);
+  const allowed = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.jpg', '.png', '.mp4'];
+  const ext = path.extname(file.originalname).toLowerCase();
+  if (allowed.includes(ext)) cb(null, true);
+  else cb(new Error('Loại file không được hỗ trợ'), false);
 };
 
-const upload = multer({ storage, limits: { fileSize: 10 * 1024 * 1024 }, fileFilter });
+const upload = multer({ storage, fileFilter, limits: { fileSize: 50 * 1024 * 1024 } }); // 50MB
 module.exports = upload;
