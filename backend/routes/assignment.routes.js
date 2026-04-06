@@ -22,6 +22,7 @@ router.get('/:assignmentId', verifyToken, assignmentController.getAssignmentDeta
 // Xóa bài tập
 router.delete('/:assignmentId', verifyToken, assignmentController.deleteAssignment);
 
+router.get('/:assignmentId/submissions', verifyToken, assignmentController.getSubmittedStudents);
 // Lấy bài tập của sinh viên (dùng cho student dashboard)
 router.get('/my/assignments', verifyToken, assignmentController.getMyAssignments);
 

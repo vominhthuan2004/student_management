@@ -154,7 +154,7 @@
         <div class="table-responsive">
           <table class="table table-bordered">
             <thead class="table-light">
-              <tr><th>Thứ</th><th>Môn học</th><th>Giờ bắt đầu</th><th>Giờ kết thúc</th><th>Phòng</th><th>Giảng viên</th></tr>
+              <tr><th>Thứ</th><th>Môn học</th><th>Giờ bắt đầu</th><th>Giờ kết thúc</th><th>Phòng</th><th>Ngày</th></tr>
             </thead>
             <tbody id="scheduleList"></tbody>
           </table>
@@ -190,7 +190,7 @@
             <td>${item.startTime}</td>
             <td>${item.endTime}</td>
             <td>${item.room || ''}</td>
-            <td>${item.teacher || ''}</td>
+            <td>${item.date || ''}</td>
           </tr>
         `;
         tbody.innerHTML += row;

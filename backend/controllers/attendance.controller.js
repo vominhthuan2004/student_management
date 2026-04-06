@@ -108,12 +108,17 @@ exports.getMyAttendance = async (req, res) => {
 //view attendance by class
 exports.getAttendanceByClass = async (req, res) => {
   try {
-    const attendances = await Attendance.find({
-      classId: req.params.classId
-    })
-      .populate("studentId")
-      .populate("classId");
-
+    const { classId } = req.params;
+    const { date } = req.query;
+    let query = { classId };
+    if (date) {
+      const start = new Date(date);
+      start.setHours(0, 0, 0, 0);
+      const end = new Date(date);
+      end.setHours(23, 59, 59, 999);
+      query.date = { $gte: start, $lte: end };
+    }
+    const attendances = await Attendance.find(query).populate('studentId', 'fullName studentCode');
     res.json(attendances);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -269,27 +274,3 @@ exports.checkin = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-// exports.checkin = async (req, res) => {
-//   try {
-//     const { code } = req.body;
-
-//     const studentId = req.user.studentId;
-
-//     if (!studentId) {
-//       return res.status(400).json({ message: "Không phải student" });
-//     }
-
-//     const attendance = new Attendance({
-//       studentId,
-//       date: new Date(),
-//       status: "present"
-//     });
-
-//     await attendance.save();
-
-//     res.json({ message: "Check-in thành công" });
-
-//   } catch (err) {
-//     res.status(500).json({ message: err.message });
-//   }
-// };

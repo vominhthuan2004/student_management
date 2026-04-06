@@ -133,6 +133,9 @@ async function renderClassesPage(container) {
           <div class="col-md-2"><input type="text" id="major" class="form-control" placeholder="Ngành"></div>
           <div class="col-md-2"><input type="number" id="year" class="form-control" placeholder="Năm học"></div>
           <div class="col-md-1"><button type="button" class="btn btn-primary" onclick="createClass()">Thêm</button></div>
+          <div class="col-md-2">
+            <select id="teacherId" class="form-select" required><option value="">Chọn giáo viên</option></select>
+          </div>
         </div>
       </form>
       <div class="table-responsive">
@@ -172,12 +175,13 @@ window.createClass = async function() {
   const className = document.getElementById('className').value;
   const major = document.getElementById('major').value;
   const year = document.getElementById('year').value;
+  const teacherId = document.getElementById('teacherId').value || null; // Tạm thời chưa gán giáo viên cho lớp
   if (!classCode || !className) {
     alert('Vui lòng nhập Mã lớp và Tên lớp');
     return;
   }
   try {
-    await axios.post(`${API}/classes`, { classCode, className, major, year, teacherId: null });
+    await axios.post(`${API}/classes`, { classCode, className, major, year, teacherId });
     await loadClasses();
     document.getElementById('classForm').reset();
   } catch (err) {

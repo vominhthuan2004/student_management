@@ -78,6 +78,27 @@ exports.submitAssignment = async (req, res) => {
   }
 };
 
+
+exports.getSubmittedStudents = async (req, res) => {
+  try {
+    const { assignmentId } = req.params;
+    const assignment = await Assignment.findById(assignmentId).populate('submissions.studentId', 'fullName studentCode');
+    if (!assignment) return res.status(404).json({ message: 'Assignment not found' });
+    
+    const submittedStudents = assignment.submissions.map(sub => ({
+      studentId: sub.studentId._id,
+      studentCode: sub.studentId.studentCode,
+      fullName: sub.studentId.fullName,
+      submittedAt: sub.submittedAt,
+      fileUrl: sub.fileUrl,
+      grade: sub.grade,
+      feedback: sub.feedback
+    }));
+    res.json(submittedStudents);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 // 3. Giáo viên chấm điểm một bài nộp
 exports.gradeSubmission = async (req, res) => {
   try {

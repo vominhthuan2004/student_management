@@ -15,7 +15,19 @@ exports.createGrade = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
+// Lấy điểm của sinh viên đang đăng nhập (dùng token)
+exports.getMyGrades = async (req, res) => {
+  try {
+    const studentId = req.user.studentId; // từ token
+    if (!studentId) {
+      return res.status(400).json({ message: 'Không tìm thấy studentId' });
+    }
+    const grades = await Grade.find({ studentId }).populate('classId', 'className');
+    res.json(grades);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 // Lấy điểm của một sinh viên trong lớp
 exports.getGradesByStudent = async (req, res) => {
   try {

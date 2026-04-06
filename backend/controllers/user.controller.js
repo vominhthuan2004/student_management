@@ -1,6 +1,100 @@
 const User = require("../schemas/user.schema");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const XLSX = require('xlsx');
+const Class = require("../schemas/class.schema");
+const Student = require("../schemas/student.schema");
+
+
+exports.importStudents = async (req, res) => {
+    try {
+        if (!req.file) return res.status(400).json({ message: 'Chưa có file Excel' });
+
+        const workbook = XLSX.readFile(req.file.path);
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        const rows = XLSX.utils.sheet_to_json(sheet);
+
+        const results = { success: 0, failed: 0, errors: [] };
+
+        for (const row of rows) {
+            try {
+                // Tìm class theo classCode
+                const classItem = await Class.findOne({ classCode: row.classCode });
+                if (!classItem) {
+                    results.failed++;
+                    results.errors.push(`Không tìm thấy lớp ${row.classCode}`);
+                    continue;
+                }
+
+                // Tạo student profile
+                const student = new Student({
+                    studentCode: row.studentCode,
+                    fullName: row.fullName,
+                    email: row.email,
+                    phone: row.phone,
+                    classId: classItem._id
+                });
+                await student.save();
+
+                // Tạo user account
+                let rawPassword = row.password ? String(row.password).replace(/['"\s]/g, '') : '123456';
+                const hashedPassword = await bcrypt.hash(rawPassword, 10);
+
+                const user = new User({
+                    username: row.username || row.studentCode,
+                    password: hashedPassword,
+                    role: 'student',
+                    studentId: student._id
+                });
+                await user.save();
+
+                results.success++;
+            } catch (err) {
+                results.failed++;
+                results.errors.push(`Lỗi dòng ${JSON.stringify(row)}: ${err.message}`);
+            }
+        }
+
+        res.json({ message: 'Import sinh viên hoàn tất', results });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Import giáo viên từ file Excel
+exports.importTeachers = async (req, res) => {
+    try {
+        if (!req.file) return res.status(400).json({ message: 'Chưa có file Excel' });
+
+        const workbook = XLSX.readFile(req.file.path);
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        const rows = XLSX.utils.sheet_to_json(sheet);
+
+        const results = { success: 0, failed: 0, errors: [] };
+
+        for (const row of rows) {
+            try {
+                const hashedPassword = await bcrypt.hash(row.password || '123456', 10);
+                const user = new User({
+                    username: row.username,
+                    password: hashedPassword,
+                    role: 'teacher'
+                });
+                await user.save();
+                results.success++;
+            } catch (err) {
+                results.failed++;
+                results.errors.push(`Lỗi dòng ${JSON.stringify(row)}: ${err.message}`);
+            }
+        }
+
+        res.json({ message: 'Import giáo viên hoàn tất', results });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 
 //get user by id
 exports.getUserById = async (req, res) => {
@@ -34,30 +128,28 @@ exports.getAllUsers = async (req, res) => {
 
 // REGISTER
 exports.register = async (req, res) => {
-    try {
+  try {
+    const { username, password, role, studentId } = req.body;
 
-        const { username, password, role, studentId } = req.body;
-
-        // hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        const user = new User({
-            username,
-            password: hashedPassword,
-            role,
-            studentId
-        });
-
-        const result = await user.save();
-
-        res.status(201).json({
-            message: "User created successfully",
-            user: result
-        });
-
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+    if (role && role !== 'student') {
+      return res.status(403).json({ message: 'Không thể tự tạo tài khoản teacher/admin' });
     }
+
+    // Nếu có studentId, kiểm tra xem đã có user nào dùng studentId này chưa
+    if (studentId) {
+      const existingUser = await User.findOne({ studentId });
+      if (existingUser) {
+        return res.status(400).json({ message: 'Sinh viên này đã có tài khoản' });
+      }
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({ username, password: hashedPassword, role: 'student', studentId });
+    await user.save();
+    res.status(201).json({ message: "User created", user });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 // LOGIN

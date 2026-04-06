@@ -5,7 +5,11 @@ const Student = require("../schemas/student.schema");
 exports.createClass = async (req, res) => {
   try {
     const teacherId = req.user.userId;
-
+    const currentyear = new Date().getFullYear();
+    
+    if(req.body.year && req.body.year < currentyear) {
+      return res.status(400).json({message: "Năm học không hợp lệ"});
+    }
     const newClass = new Class({
       ...req.body,
       teacherId

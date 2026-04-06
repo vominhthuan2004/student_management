@@ -11,7 +11,7 @@ const ScheduleSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   date: {
     type: Date,
-    required: true   
+    default: Date.now   
   }
 });
 

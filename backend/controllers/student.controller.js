@@ -57,7 +57,7 @@ exports.updateStudent = async (req, res) => {
 exports.deleteStudent = async (req, res) => {
     try {
         await Student.findByIdAndDelete(req.params.id);
-
+        await student.deleteOne();
         res.json({
             message: "Student deleted successfully"
         });

@@ -5,7 +5,7 @@ const { verifyToken, isAdminOrTeacher } = require('../middlewares/auth');
 const upload = require('../utils/upload');
 
 // Lấy điểm của chính mình (sinh viên)
-router.get('/me', verifyToken, gradeController.getGradesByStudent);
+router.get('/me', verifyToken, gradeController.getMyGrades);
 // Lấy điểm theo lớp (giáo viên)
 router.get('/class/:classId', verifyToken, gradeController.getGradesByClass);
 // Lấy điểm theo studentId (giáo viên)
@@ -16,6 +16,7 @@ router.post('/', verifyToken, gradeController.createGrade);
 router.post('/import', verifyToken, upload.single('file'), gradeController.importGradesFromExcel);
 // Cập nhật, xóa
 router.put('/:id', verifyToken, gradeController.updateGrade);
+
 router.delete('/:id', verifyToken, gradeController.deleteGrade);
 
 module.exports = router;

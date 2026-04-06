@@ -16,7 +16,9 @@ const userSchema = new mongoose.Schema({
   },
   studentId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "students"
+    ref: "students",
+    unique: true,
+    sparse: true
   },
   createdAt: {
     type: Date,
