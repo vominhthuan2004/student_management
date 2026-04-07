@@ -4,7 +4,7 @@ const Feedback = require('../schemas/feedback.schema');
 exports.createFeedback = async (req, res) => {
   try {
     const { title, content, classId } = req.body;
-    const studentId = req.user.userId; // từ token
+    const studentId = req.user.studentId; // từ token
 
     if (!title || !content || !classId) {
       return res.status(400).json({ message: 'Thiếu title, content hoặc classId' });
