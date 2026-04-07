@@ -1,7 +1,7 @@
 const Exam = require('../schemas/exam.schema');
 const Class = require('../schemas/class.schema');
 
-// Lấy lịch thi theo classId (cho sinh viên xem)
+
 exports.getExamsByClass = async (req, res) => {
   try {
     const { classId } = req.params;
@@ -12,7 +12,7 @@ exports.getExamsByClass = async (req, res) => {
   }
 };
 
-// Lấy tất cả exam (admin/teacher)
+
 exports.getAllExams = async (req, res) => {
   try {
     const exams = await Exam.find().populate('classId');
@@ -22,7 +22,7 @@ exports.getAllExams = async (req, res) => {
   }
 };
 
-// Tạo exam
+
 exports.createExam = async (req, res) => {
   try {
     const exam = new Exam(req.body);
@@ -33,7 +33,7 @@ exports.createExam = async (req, res) => {
   }
 };
 
-// Cập nhật exam
+
 exports.updateExam = async (req, res) => {
   try {
     const exam = await Exam.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -43,7 +43,7 @@ exports.updateExam = async (req, res) => {
   }
 };
 
-// Xóa exam
+
 exports.deleteExam = async (req, res) => {
   try {
     await Exam.findByIdAndDelete(req.params.id);
@@ -52,7 +52,7 @@ exports.deleteExam = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-// Lấy exam theo id (cho admin/teacher)
+
 exports.getExamById = async (req, res) => {
   try {
     const exam = await Exam.findById(req.params.id).populate('classId');

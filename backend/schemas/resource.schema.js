@@ -6,7 +6,7 @@ const resourceSchema = new mongoose.Schema({
   classId: { type: mongoose.Schema.Types.ObjectId, ref: 'Class', required: true },
   teacherId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   fileUrl: { type: String, required: true },
-  fileType: { type: String }, // pdf, doc, mp4, image...
+  fileType: { type: String }, 
   createdAt: { type: Date, default: Date.now }
 });
 

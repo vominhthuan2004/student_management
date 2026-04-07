@@ -14,7 +14,7 @@ const AssignmentSchema = new mongoose.Schema({
   classId: { type: mongoose.Schema.Types.ObjectId, ref: 'classes', required: true },
   teacherId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   dueDate: { type: Date, required: true },
-  attachments: [{ type: String }], // mảng đường dẫn file đề bài
+  attachments: [{ type: String }], 
   submissions: [SubmissionSchema],
   createdAt: { type: Date, default: Date.now }
 });

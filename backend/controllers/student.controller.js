@@ -1,6 +1,6 @@
 const Student = require("../schemas/student.schema");
 
-// CREATE STUDENT
+
 exports.createStudent = async (req, res) => {
     try {
         const student = new Student(req.body);
@@ -12,7 +12,7 @@ exports.createStudent = async (req, res) => {
     }
 };
 
-// GET ALL STUDENTS
+
 exports.getAllStudents = async (req, res) => {
     try {
         const students = await Student.find().populate("classId");
@@ -23,7 +23,7 @@ exports.getAllStudents = async (req, res) => {
     }
 };
 
-// GET STUDENT BY ID
+
 exports.getStudentById = async (req, res) => {
     try {
         const student = await Student.findById(req.params.id);
@@ -38,7 +38,7 @@ exports.getStudentById = async (req, res) => {
     }
 };
 
-// UPDATE STUDENT
+
 exports.updateStudent = async (req, res) => {
     try {
         const student = await Student.findByIdAndUpdate(
@@ -53,7 +53,7 @@ exports.updateStudent = async (req, res) => {
     }
 };
 
-// DELETE STUDENT
+
 exports.deleteStudent = async (req, res) => {
     try {
         await Student.findByIdAndDelete(req.params.id);
@@ -65,7 +65,7 @@ exports.deleteStudent = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-// tim sinh vien theo ten
+
 exports.searchStudent = async (req, res) => {
     try {
         const keyword = req.query.keyword;

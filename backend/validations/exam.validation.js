@@ -12,7 +12,7 @@ exports.validateExam = [
     .custom((value) => {
       const selectedDate = new Date(value);
       const today = new Date();
-      today.setHours(0, 0, 0, 0); // so sánh từ đầu ngày
+      today.setHours(0, 0, 0, 0); 
       if (selectedDate < today) {
         throw new Error('Ngày thi không thể trong quá khứ');
       }

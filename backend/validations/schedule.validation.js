@@ -20,7 +20,7 @@ exports.validateSchedule = [
     body('teacher')
         .optional(),
     body('date')
-        .optional()  // hoặc .notEmpty() nếu required
+        .optional()  
         .isISO8601().withMessage('Ngày không hợp lệ')
         .custom((value) => {
             const selectedDate = new Date(value);

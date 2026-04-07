@@ -6,17 +6,17 @@ const attendanceController = require("../controllers/attendance.controller");
 
 const { verifyToken } = require("../middlewares/auth");
 
-//student checkin for attendance and get my attendance
+
 router.post("/checkin", verifyToken, attendanceController.checkin);
 
 router.get("/my", verifyToken, attendanceController.getMyAttendance);
 
-//Teacher routes for attendance
+
 router.post("/generate-code",verifyToken, attendanceController.createSession);
 router.post('/manual', verifyToken, attendanceController.manualAttendance);
 router.get('/class/:classId', verifyToken, attendanceController.getAttendanceByClass);
 
-//crud for attendance
+
 router.post("/", attendanceController.createAttendance);
 
 router.get("/", attendanceController.getAllAttendance);

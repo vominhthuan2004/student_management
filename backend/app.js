@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 connectDB();
-// routes
+
 const studentRoutes = require("./routes/student.routes");
 const classRoutes = require("./routes/class.routes");
 const attendanceRoutes = require("./routes/attendance.routes");

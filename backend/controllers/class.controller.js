@@ -1,7 +1,7 @@
 const Class = require("../schemas/class.schema");
 const Student = require("../schemas/student.schema");
 
-// CREATE CLASS
+
 exports.createClass = async (req, res) => {
   try {
     const teacherId = req.user.userId;
@@ -26,7 +26,7 @@ exports.createClass = async (req, res) => {
   }
 };
 
-// GET CLASSES BY TEACHER (lấy lớp của giáo viên đang đăng nhập)
+
 exports.getClassesByTeacher = async (req, res) => {
   try {
     const teacherId = req.user.userId;
@@ -37,7 +37,7 @@ exports.getClassesByTeacher = async (req, res) => {
   }
 };
 
-// GET ALL CLASSES
+
 exports.getAllClasses = async (req, res) => {
   try {
 
@@ -52,7 +52,7 @@ exports.getAllClasses = async (req, res) => {
   }
 };
 
-// GET CLASS BY ID
+
 exports.getClassById = async (req, res) => {
   try {
 
@@ -67,7 +67,7 @@ exports.getClassById = async (req, res) => {
   }
 };
 
-// UPDATE CLASS
+
 exports.updateClass = async (req, res) => {
   try {
 
@@ -86,7 +86,7 @@ exports.updateClass = async (req, res) => {
   }
 };
 
-// DELETE CLASS
+
 exports.deleteClass = async (req, res) => {
   try {
 
@@ -101,7 +101,7 @@ exports.deleteClass = async (req, res) => {
   }
 };
 
-// get students by class
+
 exports.getStudentsByClass = async (req, res) => {
   try {
 
@@ -116,7 +116,7 @@ exports.getStudentsByClass = async (req, res) => {
   }
 };
 
-// total students in a class
+
 exports.getStudentCountByClass = async (req, res) => {
 
   try {

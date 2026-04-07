@@ -3,7 +3,7 @@ const Student = require('../schemas/student.schema');
 const XLSX = require('xlsx');
 const fs = require('fs');
 
-// Tạo điểm thủ công (giáo viên)
+
 exports.createGrade = async (req, res) => {
   try {
     const { studentId, classId, assignmentName, score, maxScore, weight } = req.body;
@@ -15,7 +15,7 @@ exports.createGrade = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-// Lấy điểm của sinh viên đang đăng nhập (dùng token)
+
 exports.getMyGrades = async (req, res) => {
   try {
     const studentId = req.user.studentId; // từ token
@@ -28,7 +28,7 @@ exports.getMyGrades = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-// Lấy điểm của một sinh viên trong lớp
+
 exports.getGradesByStudent = async (req, res) => {
   try {
     const studentId = req.params.studentId || req.user.studentId;
@@ -39,7 +39,7 @@ exports.getGradesByStudent = async (req, res) => {
   }
 };
 
-// Lấy tất cả điểm của một lớp (giáo viên)
+
 exports.getGradesByClass = async (req, res) => {
   try {
     const { classId } = req.params;
@@ -50,7 +50,7 @@ exports.getGradesByClass = async (req, res) => {
   }
 };
 
-// Cập nhật điểm
+
 exports.updateGrade = async (req, res) => {
   try {
     const { score } = req.body;
@@ -61,7 +61,7 @@ exports.updateGrade = async (req, res) => {
   }
 };
 
-// Xóa điểm
+
 exports.deleteGrade = async (req, res) => {
   try {
     await Grade.findByIdAndDelete(req.params.id);
@@ -71,7 +71,7 @@ exports.deleteGrade = async (req, res) => {
   }
 };
 
-// Import điểm từ file Excel
+
 exports.importGradesFromExcel = async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ message: 'Chưa upload file' });
@@ -79,7 +79,7 @@ exports.importGradesFromExcel = async (req, res) => {
     const sheetName = workbook.SheetNames[0];
     const sheet = workbook.Sheets[sheetName];
     const data = XLSX.utils.sheet_to_json(sheet);
-    // data là mảng các object, mỗi object có các cột: studentCode, assignmentName, score, maxScore, weight
+    
     const gradedBy = req.user.userId;
     const results = [];
     for (const row of data) {
@@ -97,7 +97,7 @@ exports.importGradesFromExcel = async (req, res) => {
       await grade.save();
       results.push(grade);
     }
-    // Xóa file tạm
+    
     fs.unlinkSync(req.file.path);
     res.json({ message: `Đã import ${results.length} điểm`, results });
   } catch (error) {

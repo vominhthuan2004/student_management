@@ -5,7 +5,7 @@ const Class = require("../schemas/class.schema");
 
 const AttendanceSession = require("../schemas/attendanceSession.schema");
 
-// CREATE ATTENDANCE
+
 exports.createAttendance = async (req, res) => {
   try {
 
@@ -22,7 +22,7 @@ exports.createAttendance = async (req, res) => {
   }
 };
 
-// GET ALL ATTENDANCE
+
 exports.getAllAttendance = async (req, res) => {
   try {
 
@@ -39,7 +39,7 @@ exports.getAllAttendance = async (req, res) => {
   }
 };
 
-// GET ATTENDANCE BY ID
+
 exports.getAttendanceById = async (req, res) => {
   try {
 
@@ -56,7 +56,7 @@ exports.getAttendanceById = async (req, res) => {
   }
 };
 
-// UPDATE ATTENDANCE
+
 exports.updateAttendance = async (req, res) => {
   try {
     const attendance = await Attendance.findByIdAndUpdate(
@@ -75,7 +75,7 @@ exports.updateAttendance = async (req, res) => {
   }
 };
 
-// DELETE ATTENDANCE
+
 exports.deleteAttendance = async (req, res) => {
   try {
 
@@ -90,7 +90,7 @@ exports.deleteAttendance = async (req, res) => {
   }
 };
 
-// view attendance by student
+
 exports.getMyAttendance = async (req, res) => {
   try {
     const attendances = await Attendance.find({
@@ -105,7 +105,7 @@ exports.getMyAttendance = async (req, res) => {
   }
 };
 
-//view attendance by class
+
 exports.getAttendanceByClass = async (req, res) => {
   try {
     const { classId } = req.params;
@@ -125,7 +125,7 @@ exports.getAttendanceByClass = async (req, res) => {
   }
 };
 
-// view attendance by date
+
 exports.getAttendanceByDate = async (req, res) => {
   try {
     const attendances = await Attendance.find({
@@ -140,7 +140,7 @@ exports.getAttendanceByDate = async (req, res) => {
   }
 };
 
-// get attendance statistics
+
 exports.getAttendanceStatistics = async (req, res) => {
   try {
     const stats = await Attendance.aggregate([
@@ -158,18 +158,18 @@ exports.getAttendanceStatistics = async (req, res) => {
   }
 };
 
-// generate attendance code
+
 function generateCode() {
   return Math.random().toString(36).substring(2, 7).toUpperCase();
 }
 
-// create attendance session
+
 exports.createSession = async (req, res) => {
   try {
     const { classId, expiryMinutes = 5 } = req.body;
     const teacherId = req.user.userId;
 
-    // Kiểm tra quyền: giáo viên có phải phụ trách lớp này không?
+   
     const classItem = await Class.findById(classId);
     if (!classItem) return res.status(404).json({ message: 'Lớp không tồn tại' });
     if (classItem.teacherId.toString() !== teacherId) {
@@ -188,7 +188,7 @@ exports.createSession = async (req, res) => {
   }
 };
 
-//manual attendance
+
 exports.manualAttendance = async (req, res) => {
   try {
     const { classId, date, attendanceList } = req.body; // attendanceList: [{ studentId, status }]
@@ -206,7 +206,7 @@ exports.manualAttendance = async (req, res) => {
     const nextDay = new Date(attendanceDate);
     nextDay.setDate(nextDay.getDate() + 1);
 
-    // Tạo hoặc cập nhật từng bản ghi
+    
     const bulkOps = attendanceList.map(item => ({
       updateOne: {
         filter: { 
@@ -232,7 +232,7 @@ exports.manualAttendance = async (req, res) => {
   }
 };
 
-//student checkin for attendance
+
 
 exports.checkin = async (req, res) => {
   try {
@@ -240,14 +240,14 @@ exports.checkin = async (req, res) => {
     const studentId = req.user.studentId;
     if (!studentId) return res.status(400).json({ message: 'Không phải student' });
 
-    // Tìm session còn hạn
+    
     const session = await AttendanceSession.findOne({
       code,
       expiresAt: { $gt: new Date() }
     });
     if (!session) return res.status(400).json({ message: 'Mã không hợp lệ hoặc đã hết hạn' });
 
-    // Kiểm tra đã điểm danh hôm nay chưa
+    
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const tomorrow = new Date(today);

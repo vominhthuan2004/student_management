@@ -8,7 +8,7 @@ const validate = require('../validations/validate');
 router.get('/class/:classId', examController.getExamsByClass);
 router.get('/', examController.getAllExams);
 router.get('/:id', examController.getExamById);
-// admin sửa/xóa exam
+
 
 router.post('/', verifyToken, validateExam, validate, examController.createExam);
 router.put('/:id', verifyToken, isAdmin, validateExam, validate, examController.updateExam);

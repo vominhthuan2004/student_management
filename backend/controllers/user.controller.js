@@ -19,7 +19,7 @@ exports.importStudents = async (req, res) => {
 
         for (const row of rows) {
             try {
-                // Tìm class theo classCode
+               
                 const classItem = await Class.findOne({ classCode: row.classCode });
                 if (!classItem) {
                     results.failed++;
@@ -27,7 +27,7 @@ exports.importStudents = async (req, res) => {
                     continue;
                 }
 
-                // Tạo student profile
+                
                 const student = new Student({
                     studentCode: row.studentCode,
                     fullName: row.fullName,
@@ -37,7 +37,7 @@ exports.importStudents = async (req, res) => {
                 });
                 await student.save();
 
-                // Tạo user account
+               
                 let rawPassword = row.password ? String(row.password).replace(/['"\s]/g, '') : '123456';
                 const hashedPassword = await bcrypt.hash(rawPassword, 10);
 
@@ -62,7 +62,7 @@ exports.importStudents = async (req, res) => {
     }
 };
 
-// Import giáo viên từ file Excel
+
 exports.importTeachers = async (req, res) => {
     try {
         if (!req.file) return res.status(400).json({ message: 'Chưa có file Excel' });
@@ -96,7 +96,7 @@ exports.importTeachers = async (req, res) => {
     }
 };
 
-//get user by id
+
 exports.getUserById = async (req, res) => {
     try {
 
@@ -113,7 +113,7 @@ exports.getUserById = async (req, res) => {
     }
 };
 
-// GET ALL USERS
+
 exports.getAllUsers = async (req, res) => {
     try {
 
@@ -126,7 +126,7 @@ exports.getAllUsers = async (req, res) => {
     }
 };
 
-// REGISTER
+
 exports.register = async (req, res) => {
   try {
     const { username, password, role, studentId } = req.body;
@@ -135,7 +135,7 @@ exports.register = async (req, res) => {
       return res.status(403).json({ message: 'Không thể tự tạo tài khoản teacher/admin' });
     }
 
-    // Nếu có studentId, kiểm tra xem đã có user nào dùng studentId này chưa
+   
     if (studentId) {
       const existingUser = await User.findOne({ studentId });
       if (existingUser) {
@@ -152,7 +152,7 @@ exports.register = async (req, res) => {
   }
 };
 
-// LOGIN
+
 exports.login = async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -169,7 +169,7 @@ exports.login = async (req, res) => {
             return res.status(401).json({ message: "Wrong password" });
         }
 
-        // Chuyển ObjectId thành string
+        
         const token = jwt.sign(
             {
                 userId: user._id.toString(),
@@ -193,7 +193,7 @@ exports.login = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
-// UPDATE USER
+
 
 exports.updateUser = async (req, res) => {
 
@@ -222,7 +222,7 @@ exports.updateUser = async (req, res) => {
 
 };
 
-// DELETE USER
+
 exports.deleteUser = async (req, res) => {
 
     try {
@@ -239,7 +239,7 @@ exports.deleteUser = async (req, res) => {
 
 };
 
-// admin create teacher
+
 
 exports.createTeacher = async (req, res) => {
 

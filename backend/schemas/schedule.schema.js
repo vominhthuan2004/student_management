@@ -3,11 +3,11 @@ const mongoose = require('mongoose');
 const ScheduleSchema = new mongoose.Schema({
   classId: { type: mongoose.Schema.Types.ObjectId, ref: 'classes', required: true },
   subject: { type: String, required: true },
-  dayOfWeek: { type: Number, min: 2, max: 8 }, // 2: Thứ 2, 3: Thứ 3, ..., 8: Chủ nhật
-  startTime: { type: String, required: true }, // "07:30"
+  dayOfWeek: { type: Number, min: 2, max: 8 }, 
+  startTime: { type: String, required: true }, 
   endTime: { type: String, required: true },
   room: { type: String },
-  teacher: { type: String }, // có thể là tên giáo viên hoặc tham chiếu đến user
+  teacher: { type: String },
   createdAt: { type: Date, default: Date.now },
   date: {
     type: Date,

@@ -6,7 +6,7 @@ exports.validateStudent = [
     .notEmpty().withMessage('Mã sinh viên không được để trống')
     .isLength({ min: 3 }).withMessage('Mã sinh viên phải có ít nhất 3 ký tự')
     .custom(async (value, { req }) => {
-      // Kiểm tra trùng lặp, bỏ qua nếu là update và studentCode không đổi
+      
       const existing = await Student.findOne({ studentCode: value });
       if (existing && (!req.params.id || existing._id.toString() !== req.params.id)) {
         throw new Error('Mã sinh viên đã tồn tại');

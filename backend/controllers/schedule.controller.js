@@ -1,7 +1,7 @@
 const Schedule = require('../schemas/schedule.schema');
 const Class = require('../schemas/class.schema');
 
-// get schedule by classId
+
 exports.getScheduleByClass = async (req, res) => {
   try {
     const { classId } = req.params;
@@ -11,7 +11,7 @@ exports.getScheduleByClass = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-// get schedule by id (cho admin/teacher)
+
 exports.getScheduleById = async (req, res) => {
   try {
     const schedule = await Schedule.findById(req.params.id).populate('classId');
@@ -21,7 +21,7 @@ exports.getScheduleById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-// get all schedules (cho admin/teacher)
+
 exports.getAllSchedules = async (req, res) => {
   try {
     const schedules = await Schedule.find().populate('classId');
@@ -31,7 +31,7 @@ exports.getAllSchedules = async (req, res) => {
   }
 };
 
-// create schedule (chỉ admin)
+
 exports.createSchedule = async (req, res) => {
   try {
     const schedule = new Schedule(req.body);
@@ -42,7 +42,7 @@ exports.createSchedule = async (req, res) => {
   }
 };
 
-// update schedule (chỉ admin)
+
 exports.updateSchedule = async (req, res) => {
   try {
     const schedule = await Schedule.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -52,7 +52,7 @@ exports.updateSchedule = async (req, res) => {
   }
 };
 
-// delete schedule (chỉ admin)
+
 exports.deleteSchedule = async (req, res) => {
   try {
     await Schedule.findByIdAndDelete(req.params.id);
