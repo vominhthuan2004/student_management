@@ -18,7 +18,7 @@ exports.createGrade = async (req, res) => {
 
 exports.getMyGrades = async (req, res) => {
   try {
-    const studentId = req.user.studentId; // từ token
+    const studentId = req.user.studentId; 
     if (!studentId) {
       return res.status(400).json({ message: 'Không tìm thấy studentId' });
     }

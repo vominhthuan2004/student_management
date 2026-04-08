@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const gradeController = require('../controllers/grade.controller');
-const { verifyToken, isAdminOrTeacher } = require('../middlewares/auth');
+const { verifyToken } = require('../middlewares/auth');
 const upload = require('../utils/upload');
 
 

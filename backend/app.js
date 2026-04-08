@@ -32,4 +32,5 @@ app.use('/api/resources', resourceRoutes);
 app.use('/api/assignments', assignmentRoutes);
 app.use('/api/feedbacks', feedbackRoutes);
 app.use('/api/grades', gradeRoutes);
+app.use('/uploads', express.static('uploads'));
 module.exports = app;

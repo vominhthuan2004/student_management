@@ -9,9 +9,11 @@ const path = require('path');
 exports.createAssignment = async (req, res) => {
   try {
     const { title, description, classId, dueDate } = req.body;
-    const teacherId = req.user.userId; // từ token
-
-    
+    const teacherId = req.user.userId; 
+    const crurrentDate = new Date();
+    if (new Date(dueDate) < crurrentDate) {
+      return res.status(400).json({ message: 'Ngày hết hạn phải sau ngày hiện tại' });
+    }
     const classItem = await Class.findById(classId);
     if (!classItem) return res.status(404).json({ message: 'Lớp không tồn tại' });
     if (classItem.teacherId && classItem.teacherId.toString() !== teacherId) {

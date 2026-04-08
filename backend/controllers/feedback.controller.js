@@ -46,6 +46,15 @@ exports.getFeedbacksByClass = async (req, res) => {
   }
 };
 
+exports.getFeedbacksByStudent = async (req, res) => {
+  try {
+    const { studentId } = req.params;
+    const feedbacks = await Feedback.find({ studentId }).sort({ createdAt: -1 });
+    res.json(feedbacks);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 exports.replyFeedback = async (req, res) => {
   try {

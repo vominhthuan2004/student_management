@@ -10,6 +10,7 @@ router.post('/', verifyToken, upload.array('attachments', 5), feedbackController
 
 router.get('/class/:classId', verifyToken, feedbackController.getFeedbacksByClass);
 
+router.get('/student/:studentId', verifyToken, feedbackController.getFeedbacksByStudent);
 
 router.put('/:id/reply', verifyToken, feedbackController.replyFeedback);
 
